@@ -2,6 +2,9 @@
 I decided to see what the world outside of ALX SE environment looks like, I got the opportunity to intern as a `Python` developer and with **CodSoft** and here
 (in this repository) are the projects that I had to build withing 4 weeks to get certified.
 
+You are free to contribute to the project after January, 2024, just ensure you read through [CONTRIBUTION.md](./CONTRIBUTION.md) to know how to contribute,
+after reading about the particular project of interest.
+
 There were 5 projects in all and I was supposed to get at least 3 of them done within the 4 weeks of internship, but as an [**ALX**](https://www.alxafrica.com/)
 brought up, I chose to do them all. I thought it was a great opportunity to stand out, if indeed being an ALX SE student makes one stand out in the tech space.
 
@@ -57,4 +60,6 @@ Python, allowing users to specify the length and complexity of the password.
 
 **User Interface:** Design a user-friendly interface for easy interaction.
 
-#### Author: [Topman Paul-Dike](https://github.com/tpauldike)
+--------
+
+##### Author: [Topman Paul-Dike](https://github.com/tpauldike)
