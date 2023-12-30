@@ -18,7 +18,7 @@ class TodoApp:
         self.button_font = ('Times New Roman', 13)
         self.button_cnf = {'background': self.highlighter, 'font': self.button_font,
                            'activebackground': self.highlighter2, 'activeforeground': self.secondary_color, 'padx': 5}
-        self.todo_list_cnf = {'width': 30, 'relief': 'groove', 'height': 23, 'anchor': 'nw',
+        self.todo_list_cnf = {'width': 28, 'relief': 'groove', 'height': 20, 'anchor': 'nw',
                               'justify': 'left', 'padx': 15, 'pady': 17, 'activebackground': self.primary_color, 'fg': '#000000'}
         self.menu_cnf = {'tearoff': 0, 'activebackground': self.highlighter2,
                          'activeforeground': self.secondary_color}
@@ -71,16 +71,16 @@ class TodoApp:
         # lEFT SECTION (Todo list)
 
         self.todo_list = tk.Label(
-            self.main_frame, font=('Helvetica', 12), cnf=self.todo_list_cnf)
+            self.main_frame, font=('Open Sans', 12), cnf=self.todo_list_cnf)
         self.todo_list.grid(row=0, column=0, rowspan=12, padx=80, pady=30)
 
         # RIGHT SECTION (Entry fields, buttons and notification box)
         self.entry_fields = tk.Label(
             self.main_frame, width=35, relief='groove', height=12)
-        self.entry_fields.grid(row=0, column=1, rowspan=6, padx=30, pady=30)
+        self.entry_fields.grid(row=0, column=1, rowspan=6, padx=23, pady=30)
 
         self.prompt = tk.Label(
-            self.entry_fields, text='Enter new task (35 characters, max): ', fg=self.color3, font=('Arial', 13))
+            self.entry_fields, text='Enter task here (32 characters, max): ', fg=self.color3, font=('Arial', 13))
         self.prompt.pack(pady=9, fill='both')
 
         # ENTRY FIELD FOR THE TASK
@@ -151,9 +151,9 @@ class TodoApp:
             characters = 0
             for c in task:
                 characters += 1
-            if characters > 35:
+            if characters > 32:
                 self.display_msg(
-                    "Error!\nA task cannot be more than 35 characters long")
+                    "Error!\nA task cannot be more than\n32 characters long")
                 return
 
             cursor = connection.cursor()
@@ -178,62 +178,173 @@ class TodoApp:
             print('option must be "Edit" or "Delete"')
             self.display_msg('Oh no!\nAn internal error occured')
             return
-
         self.create_temporary_label(option)
-        
-        try:
-            if option == 'Edit':
-                pass
-            elif option == 'Delete':
-                pass
-            # connection = sqlite3.connect("todo_list.db")
-            # cursor = connection.cursor()
-        except sqlite3.Error as e:
-            print(f'SQlite Error: {e}')
-            self.display_msg('Ouch!\nAn error occured on the database')
-        finally:
-            # connection.commit()
-            # connection.close()
-            pass
 
     def create_temporary_label(self, option):
-        self.temporary_label = tk.LabelFrame(self.root, text='Manage Todo List', font=('Open Sans', 13), fg=self.color3)
-        self.temporary_label.place(x=500, y=300, anchor=tk.CENTER, width=500, height=300)
-        self.tasks_listed = tk.Listbox(self.temporary_label, selectforeground='red', selectbackground=self.highlighter, font=('Open Sans', 12), selectmode=tk.SINGLE, height=150, relief='flat', bd=14, highlightthickness=1)
+        self.temporary_frame = tk.Frame(
+            self.root, bg='lightgreen', width=820, height=400)
+        self.temporary_frame.place(x=90, y=100)  # self.primary_color
+
+        self.temporary_label = tk.LabelFrame(
+            self.root, text='Manage Todo List', font=('Open Sans', 13), fg=self.color3)
+        self.temporary_label.place(
+            x=500, y=300, anchor=tk.CENTER, width=500, height=300)
+        self.tasks_listed = tk.Listbox(self.temporary_label, selectforeground='red', selectbackground=self.highlighter, font=(
+            'Open Sans', 12), selectmode=tk.SINGLE, height=150, relief='flat', bd=14, highlightthickness=0)
         self.tasks_listed.pack(fill='both', padx=5, pady=5)
-        
-        self.cancel_btn = tk.Button(self.temporary_label, cnf=self.button_cnf, text='Cancel', command=lambda: self.temporary_label.destroy())
+
+        self.cancel_btn = tk.Button(
+            self.temporary_label, cnf=self.button_cnf, text='Cancel', command=self.cancel_popup)
         self.cancel_btn.place(x=360, y=240)
-        
-        self.execute_btn = tk.Button(self.temporary_label, cnf=self.button_cnf, text=option, width=5)
+
+        self.execute_btn = tk.Button(
+            self.temporary_label, cnf=self.button_cnf, text=option, width=5)
         self.execute_btn.place(x=430, y=240)
-        
+
+        if option == 'Delete':
+            self.tasks_listed.config(selectmode=tk.MULTIPLE)
+            self.execute_btn.config(command=self.delete_tasks)
+        elif option == 'Edit':
+            self.tasks_listed.config(selectmode=tk.SINGLE)
+            self.execute_btn.config(command=self.edit_task)
+
         try:
             connection = sqlite3.connect("todo_list.db")
             cursor = connection.cursor()
-            
+
             if self.sort_order != 'unsorted':
-                tasks = cursor.execute(f"SELECT * FROM tasks ORDER BY task {self.sort_order}").fetchall()
+                tasks = cursor.execute(
+                    f"SELECT * FROM tasks ORDER BY task {self.sort_order}").fetchall()
             else:
                 tasks = cursor.execute(f"SELECT * FROM tasks").fetchall()
-            
-            num = 1
+
             for task in tasks:
-                self.tasks_listed.insert(tk.END, f"{num}. {task[1]}")
-                num += 1
-        
+                self.tasks_listed.insert(tk.END, task[1])
+
         except sqlite3.Error as e:
             print(f"SQlite Error: {e}")
-            self.display_msg("Unknown Error!\nCheck the console if you're a developer")
+            self.display_msg(
+                "Unknown Error!\nCheck the console if you're a developer")
         finally:
             connection.close()
 
         # select_task.bind("<<ListboxSelect>>", saved_option)
 
+    def destroy_temporary_label(self):
+        self.temporary_label.destroy()
+        self.temporary_frame.destroy()
+
+    def restore_default(self):
+        self.clear_task_field()
+        self.clear_description_field()
+        self.add_description.deselect()
+        self.display_text_field(0)
+        self.add_task_btn.config(text='Add task', command=self.add_task)
+        
+    def cancel_popup(self):
+        self.destroy_temporary_label()
+        self.restore_default()
+
+    def delete_tasks(self):
+        self.restore_default()
+        try:
+            selected_indices = self.tasks_listed.curselection()
+            selected_tasks = [self.tasks_listed.get(task) for task in selected_indices]
+            to_be_deleted = tuple(selected_tasks)
+
+            connection = sqlite3.connect("todo_list.db")
+            cursor = connection.cursor()
+            placeholders = ', '.join(['?' for _ in to_be_deleted])
+            cursor.execute(f"DELETE FROM tasks WHERE task IN ({placeholders})", to_be_deleted)
+
+            self.destroy_temporary_label()
+
+            row_count = cursor.rowcount
+            if row_count <= 0:
+                print('row count is less than 1')
+                self.display_msg('Error!!\nNo task was selected')
+                return
+            elif row_count == 1:
+                noun = 'task'
+            else:
+                noun = 'tasks'
+                
+            connection.commit()
+            connection.close()
+            
+            self.display_todo_list()
+            self.display_msg(f'{row_count} {noun} successfully deleted')
+        except sqlite3.Error as e:
+            print(f"SQlite Error: {e}")
+
+    def edit_task(self):
+        try:
+            selected_task = self.tasks_listed.get(
+                self.tasks_listed.curselection())
+
+            connection = sqlite3.connect("todo_list.db")
+            cursor = connection.cursor()
+            self.task_to_update = cursor.execute(
+                "SELECT * FROM tasks WHERE task=(?)", (selected_task,)).fetchone()
+
+            self.clear_task_field()
+            self.task_field.insert(0, self.task_to_update[1])
+
+            self.clear_description_field()
+            self.add_description.select()
+            self.display_text_field(1)
+
+            self.destroy_temporary_label()
+
+            self.description_field.insert(1.0, self.task_to_update[2])
+            self.add_task_btn.config(text='Update', command=self.update_task)
+            if not self.task_to_update[2] or self.task_to_update[2] == '\n':
+                self.display_msg('Oouch!\nNo description found for this task')
+        except sqlite3.Error as e:
+            print(f"SQlite Error: {e}")
+        finally:
+            connection.close()
+
+    def update_task(self):
+        try:
+            task = self.task_field.get()
+            description = self.description_field.get(1.0, tk.END)
+
+            connection = sqlite3.connect("todo_list.db")
+            if not task:
+                self.display_msg("An empty task cannot be added")
+                return
+
+            characters = 0
+            for c in task:
+                characters += 1
+            if characters > 32:
+                self.display_msg(
+                    "Error!\nA task cannot be more than\n32 characters long")
+                return
+
+            cursor = connection.cursor()
+            cursor.execute(
+                'UPDATE tasks SET task=(?), description=(?) WHERE task=(?) ', (task, description, self.task_to_update[1]))
+
+            self.restore_default()
+            self.display_msg("Task successfully updated")
+
+        except sqlite3.Error as e:
+            print(f"SQlite Error: {e}")
+            self.display_msg('Oops!\nThere was an error with the database')
+        finally:
+            if connection:
+                connection.commit()
+                connection.close()
+
+            self.display_todo_list()
+
     def search_list(self):
         self.display_msg('Search is not available yet')
 
     def delete_all_tasks(self):
+        self.restore_default()
         choice = messagebox.askokcancel(
             title="Delete all?", message="The current list will be entirely lost and this can not be undone. Do you want to continue?")
         if choice == True:
