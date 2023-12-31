@@ -90,7 +90,7 @@ class TodoApp:
                               menu=self.contact_menu)
 
         self.root.config(menu=self.menu)
-        # self.root.protocol("WM_DELETE_WINDOW", self.confirm_exit)
+        self.root.protocol("WM_DELETE_WINDOW", self.confirm_exit)
 
         self.main_frame = tk.Frame(self.root, bg=self.primary_color)
         self.main_frame.pack(fill='x', pady=60)
