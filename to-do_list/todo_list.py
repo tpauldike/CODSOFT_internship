@@ -90,7 +90,6 @@ class TodoApp:
                               menu=self.contact_menu)
 
         self.root.config(menu=self.menu)
-        self.root.protocol("WM_DELETE_WINDOW", self.confirm_exit)
 
         self.main_frame = tk.Frame(self.root, bg=self.primary_color)
         self.main_frame.pack(fill='x', pady=60)
@@ -163,6 +162,7 @@ class TodoApp:
             1000, self.display_msg, self.default_notification_text)
 
         # Set the size and position of the window and start the app (loop infinitely)
+        self.root.protocol("WM_DELETE_WINDOW", self.confirm_exit)
         self.centralize_window(self.root, 1000, 650)
         self.root.mainloop()
 
