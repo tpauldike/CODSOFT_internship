@@ -28,7 +28,6 @@ class TodoApp:
 
         self.root = tk.Tk()
         self.root.title('Todo App')
-        self.root.geometry('1000x650')
 
         # MENU SECTION
 
@@ -162,7 +161,8 @@ class TodoApp:
         self.notification_box.after(
             1000, self.display_msg, self.default_notification_text)
 
-        # Start the app; loop infinitely
+        # Set the size and position of the window and start the app (loop infinitely)
+        self.centralize_window(self.root, 1000, 650)
         self.root.mainloop()
 
     def add_task(self):
@@ -254,8 +254,6 @@ class TodoApp:
                 "Unknown Error!\nCheck the console if you're a developer")
         finally:
             connection.close()
-
-        # select_task.bind("<<ListboxSelect>>", saved_option)
 
     def destroy_temporary_label(self):
         self.temporary_label.destroy()
@@ -440,9 +438,6 @@ class TodoApp:
                 state='disabled', highlightthickness=0)
             self.clear_btn.config(state='disabled')
 
-    def lock_app():
-        pass
-
     def clear_task_field(self):
         self.task_field.delete(0, tk.END)
 
@@ -515,8 +510,18 @@ class TodoApp:
             'twitter': 'https://twitter.com/tpauldike',
             'facebook': 'https://facebook.com/tpauldike'
         }
-
         webbrowser.open(web_url[platform])
-
-
+        
+    def centralize_window(self, window: object, width: int, height: int):
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        x = (screen_width - width) // 2
+        y = (screen_height - height) // 2
+        window.geometry(f"{str(width)}x{str(height)}+{x}+{y}")
+    
+    def lock_app():
+        pass
+    
+    
+# Instantiate the class and get the app running
 TodoApp()
