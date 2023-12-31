@@ -526,6 +526,6 @@ class TodoApp:
         self.centralize_window(self.app_lock_window, 600, 400)
         self.app_lock_window.transient(self.root)
         self.app_lock_window.grab_set()
-    
-# Instantiate the class and get the app running
+ 
+
 TodoApp()
