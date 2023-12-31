@@ -519,9 +519,13 @@ class TodoApp:
         y = (screen_height - height) // 2
         window.geometry(f"{str(width)}x{str(height)}+{x}+{y}")
     
-    def lock_app():
-        pass
-    
+    def lock_app(self):
+        self.app_lock_window = tk.Toplevel()
+        self.app_lock_window.title('Lock App')
+        self.app_lock_window.config(bg='lightblue')
+        self.centralize_window(self.app_lock_window, 600, 400)
+        self.app_lock_window.transient(self.root)
+        self.app_lock_window.grab_set()
     
 # Instantiate the class and get the app running
 TodoApp()
