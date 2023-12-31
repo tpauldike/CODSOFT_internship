@@ -375,6 +375,7 @@ class TodoApp:
         self.restore_default()
         choice = messagebox.askokcancel(
             title="Delete all?", message="The current list will be entirely lost and this can not be undone. Do you want to continue?")
+       
         if choice == True:
             connection = sqlite3.connect("todo_list.db")
             cursor = connection.cursor()
@@ -383,7 +384,7 @@ class TodoApp:
             connection.close()
             self.display_msg('Successfully deleted the list')
             self.display_todo_list()
-        if choice == False:
+        elif choice == False:
             self.display_msg('Operation canceled')
         else:
             self.display_msg('Oops!\nAn unknown error occured')
