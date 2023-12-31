@@ -2,6 +2,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import sqlite3
+import webbrowser
 
 
 class TodoApp:
@@ -19,7 +20,7 @@ class TodoApp:
         self.button_cnf = {'background': self.highlighter, 'font': self.button_font,
                            'activebackground': self.highlighter2, 'activeforeground': self.secondary_color, 'padx': 5}
         self.todo_list_cnf = {'width': 28, 'relief': 'groove', 'height': 20, 'anchor': 'nw',
-                              'justify': 'left', 'padx': 15, 'pady': 17, 'activebackground': self.primary_color, 'fg': '#000000'}
+                              'justify': 'left', 'padx': 15, 'pady': 17, 'activebackground': self.primary_color, 'fg': self.color3}
         self.menu_cnf = {'tearoff': 0, 'activebackground': self.highlighter2,
                          'activeforeground': self.secondary_color}
         self.default_notification_text = 'Welcome!\nNotifications are displayed here'
@@ -37,6 +38,8 @@ class TodoApp:
             self.menu, cnf=self.menu_cnf)
         self.sort_types = tk.Menu(self.settings_menu, cnf=self.menu_cnf)
         self.edit_menu = tk.Menu(self.menu, cnf=self.menu_cnf)
+        self.help_menu = tk.Menu(self.menu, cnf=self.menu_cnf)
+        self.contact_menu = tk.Menu(self.menu, cnf=self.menu_cnf)
 
         self.sort_types.add_command(
             label='Ascending order', command=lambda: self.sort_list('asc'))
@@ -47,6 +50,8 @@ class TodoApp:
         self.settings_menu.add_cascade(label='Sort list', menu=self.sort_types)
         self.settings_menu.add_command(
             label='Show/hide', command=self.show_or_hide_list)
+        self.settings_menu.add_command(
+            label='Reminder', command=lambda: self.display_msg('Sorry!\nReminder menu is\ncurrently under maintenance'))
         self.settings_menu.add_command(
             label='Exit app', command=self.confirm_exit)
 
@@ -59,9 +64,31 @@ class TodoApp:
         self.edit_menu.add_command(
             label='Delete all tasks', command=self.delete_all_tasks)
 
+        self.help_menu.add_command(
+            label='See README', command=lambda: self.open_in_browser('readme'))
+        self.help_menu.add_command(
+            label='Get Tutorial', command=lambda: self.open_in_browser('tutorial'))
+        self.help_menu.add_command(
+            label='via WhatsApp', command=lambda: self.open_in_browser('whatsapp'))
+
+        self.contact_menu.add_command(
+            label='Subscribe on YouTube', command=lambda: self.open_in_browser('youtube'))
+        self.contact_menu.add_command(
+            label='Follow on GitHub', command=lambda: self.open_in_browser('github'))
+        self.contact_menu.add_command(
+            label='Connect on LinkedIn', command=lambda: self.open_in_browser('linkedin'))
+        self.contact_menu.add_command(
+            label='Follow on Twitter', command=lambda: self.open_in_browser('twitter'))
+        self.contact_menu.add_command(
+            label='Connect on Facebook', command=lambda: self.open_in_browser('facebook'))
+
         self.menu.add_cascade(label='Settings', menu=self.settings_menu)
         self.menu.add_cascade(label='Edit', menu=self.edit_menu)
         self.menu.add_command(label='Search', command=self.search_list)
+        self.menu.add_cascade(label='Get help', menu=self.help_menu)
+        self.menu.add_cascade(label='Connect with Topman',
+                              menu=self.contact_menu)
+
         self.root.config(menu=self.menu)
         # self.root.protocol("WM_DELETE_WINDOW", self.confirm_exit)
 
@@ -240,7 +267,7 @@ class TodoApp:
         self.add_description.deselect()
         self.display_text_field(0)
         self.add_task_btn.config(text='Add task', command=self.add_task)
-        
+
     def cancel_popup(self):
         self.destroy_temporary_label()
         self.restore_default()
@@ -249,13 +276,15 @@ class TodoApp:
         self.restore_default()
         try:
             selected_indices = self.tasks_listed.curselection()
-            selected_tasks = [self.tasks_listed.get(task) for task in selected_indices]
+            selected_tasks = [self.tasks_listed.get(
+                task) for task in selected_indices]
             to_be_deleted = tuple(selected_tasks)
 
             connection = sqlite3.connect("todo_list.db")
             cursor = connection.cursor()
             placeholders = ', '.join(['?' for _ in to_be_deleted])
-            cursor.execute(f"DELETE FROM tasks WHERE task IN ({placeholders})", to_be_deleted)
+            cursor.execute(
+                f"DELETE FROM tasks WHERE task IN ({placeholders})", to_be_deleted)
 
             self.destroy_temporary_label()
 
@@ -268,10 +297,10 @@ class TodoApp:
                 noun = 'task'
             else:
                 noun = 'tasks'
-                
+
             connection.commit()
             connection.close()
-            
+
             self.display_todo_list()
             self.display_msg(f'{row_count} {noun} successfully deleted')
         except sqlite3.Error as e:
@@ -399,7 +428,7 @@ class TodoApp:
             self.display_msg('List visible')
         else:
             self.todo_list.config(text="")
-            self.display_msg('List hidden\nClick on "show" to see list')
+            self.display_msg('List hidden.\nClick on "show" to see list')
 
     def display_text_field(self, checkbox_status):
         if checkbox_status == 1:
@@ -475,7 +504,19 @@ class TodoApp:
         if option == 1:
             self.root.quit()
 
+    def open_in_browser(self, platform):
+        web_url = {
+            'readme': 'https://github.com/tpauldike/CODSOFT/blob/main/to-do_list/README.md',
+            'tutorial': 'https://youtube.com/@tpauldike',
+            'whatsapp': 'https://wa.link/66ef36',
+            'youtube': 'https://youtube.com/@tpauldike',
+            'github': 'https://github.com/tpauldike',
+            'linkedin': 'https://linkedin.com/in/tpauldike',
+            'twitter': 'https://twitter.com/tpauldike',
+            'facebook': 'https://facebook.com/tpauldike'
+        }
+
+        webbrowser.open(web_url[platform])
+
 
 TodoApp()
-
-# d0d0f5 lightgreen #355e64 #e86343  height=500, width=850, , image='./images/app_icon.ico'
