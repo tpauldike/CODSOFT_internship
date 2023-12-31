@@ -523,4 +523,5 @@ class TodoApp:
     def lock_app(self):
         LockTodoApp(self.root)
  
+
 TodoApp()
