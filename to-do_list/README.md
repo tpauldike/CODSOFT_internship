@@ -43,7 +43,7 @@ Notifications are displayed here
 6. Popup windows, apart from dialogue boxes for confirmation and warnings, invoked by certain actions such as; 'delete' and 'edit'
 
 ## How to Install the App
-> *If you prefer seeing a video tutorial, [watch me demonstrate the installation here]().
+> *If you prefer seeing a video tutorial, [watch me demonstrate the installation here](https://youtu.be/_HAj5oL9GPA?si=oECWArJe0WmvKXBN).*
 
 It is quite easy to use. Take the following steps on the command line (I mean your terminal):
 
@@ -80,7 +80,7 @@ $ python3 todo_list.py
 $ ./todo_list.py
 ```
 
-> *The app should be running by now and ready for use, it will automatically generate a file named 'todo_list.db' that serves as your database and holds all saved data, retrievable when you exit the app and start it again*
+> *The app should be running by now and ready for use, it will automatically generate a file named 'todo_list.db' that serves as your database and holds all saved data, retrievable when you exit the app and return later*
 
 ## How to Use the App
 Please see [this short video]() to learn how to use the app or contact [Topman Paul-Dike](https://github.com/tpauldike) if you need some help or have suggestions/complaints
