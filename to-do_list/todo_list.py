@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 import sqlite3
 import webbrowser
+from lock_app import LockTodoApp
 
 
 class TodoApp:
@@ -520,12 +521,6 @@ class TodoApp:
         window.geometry(f"{str(width)}x{str(height)}+{x}+{y}")
     
     def lock_app(self):
-        self.app_lock_window = tk.Toplevel()
-        self.app_lock_window.title('Lock App')
-        self.app_lock_window.config(bg='lightblue')
-        self.centralize_window(self.app_lock_window, 600, 400)
-        self.app_lock_window.transient(self.root)
-        self.app_lock_window.grab_set()
+        LockTodoApp(self.root)
  
-
 TodoApp()
