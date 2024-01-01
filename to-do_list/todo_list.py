@@ -504,7 +504,7 @@ class TodoApp:
     def open_in_browser(self, platform):
         web_url = {
             'readme': 'https://github.com/tpauldike/CODSOFT/blob/main/to-do_list/README.md',
-            'tutorial': 'https://youtube.com/@tpauldike',
+            'tutorial': 'https://youtu.be/l5-fpVeGC44?si=_xaedKTvmC9bvq9t',
             'whatsapp': 'https://wa.link/66ef36',
             'youtube': 'https://youtube.com/@tpauldike',
             'github': 'https://github.com/tpauldike',
