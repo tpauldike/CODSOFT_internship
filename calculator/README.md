@@ -14,7 +14,7 @@ it will stop.
 
 ### Contributing
 Your contribution is welcome, if you have any; please read
-[CONTRIBUTION.md](./CONTRIBUTION.md) to understand what is
+[CONTRIBUTION.md](../CONTRIBUTION.md) to understand what is
 expected of you, for your contribution to be considered valid
 
 For help, please contact [Topman Paul-Dike](https://github.com/tpauldike)
