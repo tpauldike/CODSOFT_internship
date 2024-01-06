@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # A simple calculator that performs basic arithmetic operations
 
 def execute(a, b, choice):
@@ -23,8 +22,9 @@ def execute(a, b, choice):
 
 
 def is_valid(user_input):
+    '''checks whether the input is a valid interger or float value'''
     try:
-        int(user_input.strip())
+        int(user_input.strip()) or float(user_input.strip())
         return True
     except:
         print(f'"{user_input}" is not valid')
@@ -33,21 +33,18 @@ def is_valid(user_input):
 
 def valid_choice(choice):
     choice = choice.strip()
-    options = [1, 2, 3, 4]
-
-    for option in options:
-        if option == int(choice):
-            break
-    return True
-
+    options = set('1234')
+    try:
+        if len(choice) == 1 and choice in options:
+            return True
+    except ValueError:
+        return False
 
 
 def quit(response):
     options = ['y', 'yes']
     if response.strip().lower() in options:
         return False
-    else:
-        return True
 
 
 while True:
@@ -66,7 +63,7 @@ while True:
         f'Pick an number:\n1 for {a} + {b}\n2 for {a} - {b}\n3 for {a} × {b}\n4 for {a} ÷ {b}\nYour choice: ')
 
     if not valid_choice(operand):
-        print(f'"{operand}" is not a valid choice.\n Calculator stopped')
+        print(f'"{operand}" is not a valid choice. Only "1, 2, 3, 4" are allowed\n Calculator stopped')
         break
 
     execute(a, b, operand)
