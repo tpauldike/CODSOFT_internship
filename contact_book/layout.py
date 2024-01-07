@@ -48,6 +48,7 @@ class GUI:
         self.root.mainloop()
 
     def centralize_window(self, window: object, width: int, height: int):
+        '''gets the main window centralized on the computer screen'''
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
         x = (screen_width - width) // 2
@@ -55,6 +56,7 @@ class GUI:
         window.geometry(f"{str(width)}x{str(height)}+{x}+{y}")
 
     def display_home_page(self):
+        '''creates all widgets present in the home page'''
         self.title = tk.Label(self.root, text='Contact Manager', bg=self.root_bg,
                               fg=self.text_color, font=('Georgia', 25, 'bold'))
         self.title.pack(pady=40, anchor='center')
@@ -79,6 +81,7 @@ class GUI:
         self.delete_btn.pack(pady=5)
 
     def display_input_fields(self, labeltext: str):
+        '''creates the input fields for adding or updating contacts'''
         self.destroy_all_widgets()
         self.input_fields = tk.LabelFrame(self.root, text=labeltext, font=(
             'Verdana', 14), border=2, pady=15, padx=10, bg=self.root_bg, fg=self.text_color, labelanchor='n')
@@ -125,11 +128,13 @@ class GUI:
         self.save_btn.grid(row=0, column=1)
 
     def back_home(self):
+        '''destroys all widgets and recreate the home page widgets'''
         self.destroy_all_widgets()
         self.display_home_page()
         self.root.config(bg=self.root_bg)
 
     def destroy_all_widgets(self):
+        '''checks for certain attributes and destroys them if present'''
         if hasattr(self, 'title') and self.title.winfo_exists():
             self.title.destroy()
         if hasattr(self, 'home') and self.home.winfo_exists():
@@ -142,6 +147,7 @@ class GUI:
             self.contact_details.destroy()
 
     def display_contacts(self):
+        '''displays a list of all the contacts saved'''
         self.destroy_all_widgets()
         self.contact_management_frame = tk.Frame(
             self.root, bg=self.root_bg, padx=10)
@@ -191,13 +197,15 @@ class GUI:
         self.management_add_new_btn.grid(row=0, column=4)
 
     def display_contact_details(self):
+        '''displays full details of the selected contact'''
         if hasattr(self, 'contact_details') and self.contact_details.winfo_exists():
             self.close_contact_details()
             return
-        
-        self.contact_details = tk.LabelFrame(self.root, bg=self.contact_details_bg, padx=10, pady=50)
+
+        self.contact_details = tk.LabelFrame(
+            self.root, bg=self.contact_details_bg, padx=10, pady=50)
         self.contact_details.place(x=230, y=150)
-        
+
         self.contact_name_label = tk.Label(
             self.contact_details, text='Name: ', cnf=self.contact_label_cnf)
         self.contact_name_label.grid(row=0, column=0)
@@ -225,21 +233,22 @@ class GUI:
         self.contact_email_displayed = tk.Text(
             self.contact_details, cnf={'font': ('Gerogia', 13), 'state': 'disabled', 'width': 30, 'bg': self.input_bg}, height=3, pady=5)
         self.contact_email_displayed.grid(row=3, column=1, rowspan=4)
-        
+
         self.close_btn = tk.Button(
             self.contact_details, text='close', cnf=self.search_btn_cnf, command=self.close_contact_details)
         self.close_btn.place(x=300, y=182)
-        
+
         self.root.config(bg=self.root_bg2)
         self.contact_management_frame.config(bg=self.root_bg2)
-        
+
     def close_contact_details(self):
         self.root.config(bg=self.root_bg)
         self.contact_management_frame.config(bg=self.root_bg)
         self.contact_details.destroy()
-        
+
     def search_contact(self):
+        '''finds all the contacts that have the given string inputed'''
         if hasattr(self, 'contact_details') and self.contact_details.winfo_exists():
             self.close_contact_details()
-    
+
  # '#234346'
