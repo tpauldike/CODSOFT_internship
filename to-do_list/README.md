@@ -1,4 +1,5 @@
 # ToDo App with `Python Tkinter`
+![todo_app_with_python_tkinter](https://github.com/tpauldike/rough_work/blob/main/screenshots/todo_app.png)
 
 ## About the App
 This is a desktop application built using `Python` Tkinter as the Graphical User Interface tool. It's a unique todo app with extra features and with some edge cases handled. The entire application was coded in `Python` programming language.
