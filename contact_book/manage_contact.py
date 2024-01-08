@@ -31,6 +31,7 @@ class Contacts:
     def create_contact(self, name: str, phone: str, email: str, address: str) -> str | None:
         '''creates a new contacts with the details supplied'''
         created_at = updated_at = self.current_timestamp
+        
         try:
             connection = sqlite3.connect("contacts.db")
             cursor = connection.cursor()
@@ -97,7 +98,6 @@ class Contacts:
             if connection:
                 connection.close()
     
-    
     def search_contacts(self, given_string: str) -> tuple | None:
         '''returns all contact with the given string in their names'''
         try:
@@ -105,6 +105,22 @@ class Contacts:
             cursor = connection.cursor()
             
             contacts = cursor.execute('SELECT name FROM contacts WHERE name LIKE ?', (f'%{given_string}%',)).fetchall()
+            if contacts:
+                return contacts
+
+        except Error as e:
+            print(f'SQLite Error: {e}')
+        finally:
+            if connection:
+                connection.close()
+                
+    def search_by_phone(self, phone: str) -> tuple | None:
+        '''returns all contact with the given number in their numbers'''
+        try:
+            connection = sqlite3.connect("contacts.db")
+            cursor = connection.cursor()
+            
+            contacts = cursor.execute('SELECT name FROM contacts WHERE phone LIKE ?', (f'%{phone}%',)).fetchall()
             if contacts:
                 return contacts
 
@@ -128,6 +144,40 @@ class Contacts:
             connection.commit()
             
             return f'No. of contacts deleted: {row_count}'
+        
+        except Error as e:
+            print(f'SQLite Error: {e}')
+        finally:
+            if connection:
+                connection.close()
+
+    def email_exists(self, email: str) -> bool:
+        '''checks if a contact with the given email exists'''
+        try:
+            connection = sqlite3.connect("contacts.db")
+            cursor = connection.cursor()
+            
+            if cursor.execute('SELECT * FROM contacts WHERE email=?', (email,)).fetchone():
+                return True
+            else:
+                return False
+        
+        except Error as e:
+            print(f'SQLite Error: {e}')
+        finally:
+            if connection:
+                connection.close()
+                
+    def phone_exists(self, phone: str) -> bool:
+        '''checks if a contact with the given phone number exists'''
+        try:
+            connection = sqlite3.connect("contacts.db")
+            cursor = connection.cursor()
+            
+            if cursor.execute('SELECT * FROM contacts WHERE phone=?', (phone,)).fetchone():
+                return True
+            else:
+                return False
         
         except Error as e:
             print(f'SQLite Error: {e}')
