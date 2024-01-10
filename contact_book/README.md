@@ -35,7 +35,7 @@ $ git clone https://github.com/tpauldike/CODSOFT.git
 # Check to see whether you have CODSOFT on your terminal by now
 $ ls
 # Navigate into the calculator folder
-$ cd CODSOFT/contact_list
+$ cd CODSOFT/contact_book
 # Run the app
 $ python3 app.py
 # alternatively, you can do
