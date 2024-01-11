@@ -130,15 +130,15 @@ class Contacts:
             if connection:
                 connection.close()
     
-    def delete_contacts(self, contacts: tuple) -> str | None:
+    def delete_contacts(self, names: tuple) -> str | None:
         '''deletes the given contact(s)'''
         try:
             connection = sqlite3.connect("contacts.db")
             cursor = connection.cursor()
             
-            placeholders = ', '.join(['?' for _ in contacts])
+            placeholders = ', '.join(['?' for _ in names])
             cursor.execute(
-                f"DELETE FROM contacts WHERE name IN ({placeholders})", contacts)
+                f"DELETE FROM contacts WHERE name IN ({placeholders})", names)
             
             row_count = cursor.rowcount
             connection.commit()
@@ -151,16 +151,14 @@ class Contacts:
             if connection:
                 connection.close()
 
-    def email_exists(self, email: str) -> bool:
-        '''checks if a contact with the given email exists'''
+    def email_exists(self, email: str) -> bool | None:
+        '''returns True if a contact with the given email already exists'''
         try:
             connection = sqlite3.connect("contacts.db")
             cursor = connection.cursor()
             
             if cursor.execute('SELECT * FROM contacts WHERE email=?', (email,)).fetchone():
                 return True
-            else:
-                return False
         
         except Error as e:
             print(f'SQLite Error: {e}')
@@ -168,16 +166,14 @@ class Contacts:
             if connection:
                 connection.close()
                 
-    def phone_exists(self, phone: str) -> bool:
-        '''checks if a contact with the given phone number exists'''
+    def phone_exists(self, phone: str) -> bool | None:
+        '''returns True if a contact with the given phone number already exists'''
         try:
             connection = sqlite3.connect("contacts.db")
             cursor = connection.cursor()
             
             if cursor.execute('SELECT * FROM contacts WHERE phone=?', (phone,)).fetchone():
                 return True
-            else:
-                return False
         
         except Error as e:
             print(f'SQLite Error: {e}')
