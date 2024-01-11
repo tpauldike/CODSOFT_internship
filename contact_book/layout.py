@@ -333,6 +333,13 @@ class GUI:
             self.close_contact_details()
 
         search_string = self.search_input.get()
+        if self.management_search_btn.cget('text') == 'refresh':
+            self.destroy_all_widgets()
+            self.create_contact_list_widgets()
+            self.search_btn.config(text='search')
+            return
+        if not search_string:
+            return
         try:
             int(search_string[1:])
             found = self.db.search_by_phone(search_string)
@@ -344,7 +351,7 @@ class GUI:
                                     message='No contact found')
             else:
                 self.list_contacts(found)
-            # self.search_input.delete(0, tk.END)
+                self.management_search_btn.config(text='refresh')
 
     def display_error(self, message: str, error_bg='#000000') -> None:
         """toggles the background color and displays the error message"""
