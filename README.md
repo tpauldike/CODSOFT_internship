@@ -1,6 +1,6 @@
-# CodSoft Internship (`Python`)
+# CodSoft Internship (`Python Development`)
 I decided to see what the world outside of ALX SE environment looks like, I got the opportunity to intern as a `Python` developer and with **CodSoft** and here
-(in this repository) are the projects that I had to build withing 4 weeks to get certified.
+(in this repository) are the projects that I had to build within 4 weeks to get certified.
 
 You are free to contribute to the project after January, 2024, just ensure you read through [CONTRIBUTION.md](./CONTRIBUTION.md) to know how to contribute,
 after reading about the particular project of interest.
