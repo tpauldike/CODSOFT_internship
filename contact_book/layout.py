@@ -362,8 +362,14 @@ class GUI:
     def display_error(self, message: str, error_bg='#000000') -> None:
         """toggles the background color and displays the error message"""
         self.root.config(bg=error_bg)
+        if hasattr(self, 'contact_list') and self.contact_list.winfo_exists():
+            self.contact_management_frame.config(bg=error_bg)
         messagebox.showerror(title='Error', message=message)
-        self.root.config(bg=self.root_bg)
+        if hasattr(self, 'contact_list') and self.contact_list.winfo_exists():
+            self.contact_management_frame.config(bg=self.fade_color)
+            self.root.config(bg=self.fade_color)
+        else:
+            self.root.config(bg=self.root_bg)
 
     def delete_contact(self) -> None:
         '''deletes the currently selected contact'''
@@ -377,9 +383,9 @@ class GUI:
         response = messagebox.askyesno(title='Confirm delete', message=f'Do you want to delete the contact?\n{contact_details[1]}\n{contact_details[2]}')
         if response:
             rval = self.db.delete_contacts((contact_details[1],))
-            messagebox.showinfo(title='Operation Successful', message='The contact has been successfully deleted')
             self.destroy_all_widgets()
             self.create_contact_list_widgets()
+            messagebox.showinfo(title='Operation Successful', message='The contact has been successfully deleted')
         return rval
 
     def list_contacts(self, contacts: tuple) -> None:
@@ -404,9 +410,9 @@ class GUI:
             return
         if self.input_fields.cget('text') == 'Add New Contact':
             if not self.db.email_exists(email) and not self.db.phone_exists(phone):
-               feedback = self.db.create_contact(name, phone, email, address)
+                self.db.create_contact(name, phone, email, address)
         elif self.input_fields.cget('text') == 'Update Contact Information':
-            feedback =self.db.update_contact(self.selected_id, name, phone, email, address)
+            self.db.update_contact(self.selected_id, name, phone, email, address)
             
         self.clear_input_fields()
         if self.input_fields.cget('text') == 'Update Contact Information':
@@ -415,8 +421,6 @@ class GUI:
             self.create_contact_list_widgets()
         elif self.input_fields.cget('text') == 'Add New Contact':
             messagebox.showinfo(title='Operation Successful', message='New contact successfully added')
-        
-        return feedback
 
     def clear_input_fields(self) -> None:
         '''clears the Name, Phone, Email and Address fields, if successfully saved'''
