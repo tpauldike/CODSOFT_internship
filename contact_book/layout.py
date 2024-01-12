@@ -399,10 +399,10 @@ class GUI:
 
     def save(self) -> str | None:
         '''creates or updates a contact'''
-        name = self.name_input.get()
+        name = self.name_input.get().strip()
         phone = self.phone_input.get().strip()
         email = self.email_input.get().strip().lower()
-        address = self.address_input.get(1.0, tk.END)
+        address = self.address_input.get(1.0, tk.END).strip()
         
         if not self.is_valid():
             return
@@ -410,10 +410,10 @@ class GUI:
             return
         if self.input_fields.cget('text') == 'Add New Contact':
             if self.db.email_exists(email):
-                self.display_error(f"A user with the email '{email}' already exists")
+                self.display_error(f"A contact with the email '{email}' already exists")
                 return
             if self.db.phone_exists(phone):
-                self.display_error(f"A user with the number '{phone}' already exists")
+                self.display_error(f"A contact with the number '{phone}' already exists")
                 return
             self.db.create_contact(name, phone, email, address)
         elif self.input_fields.cget('text') == 'Update Contact Information':
