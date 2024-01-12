@@ -5,7 +5,6 @@ from datetime import datetime
 class Contacts:
     def __init__(self) -> None:
         '''the class responsible for database settings and communication'''
-        self.current_timestamp = datetime.now().strftime('%d/%m/%Y by %H:%M:%S')
         
     def set_up_database() -> None:
         '''creates the database and table(s), if they don't already exist'''
@@ -17,7 +16,7 @@ class Contacts:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 phone TEXT NOT NULL UNIQUE,
-                email UNIQUE,
+                email TEXT,
                 address TEXT,
                 created_at NOT NULL,
                 updated_at NOT NULL)''')
@@ -30,7 +29,8 @@ class Contacts:
         
     def create_contact(self, name: str, phone: str, email: str, address: str) -> str | None:
         '''creates a new contacts with the details supplied'''
-        created_at = updated_at = self.current_timestamp
+        current_timestamp = datetime.now().strftime('%d/%m/%Y by %H:%M:%S')
+        created_at = updated_at = current_timestamp
         
         try:
             connection = sqlite3.connect("contacts.db")
@@ -49,6 +49,7 @@ class Contacts:
         
     def update_contact(self, id: int, name: str, phone: str, email: str, address: str) -> str | None:
         '''updates an existing contact'''
+        current_timestamp = datetime.now().strftime('%d/%m/%Y by %H:%M:%S')
         try:
             connection = sqlite3.connect("contacts.db")
             cursor = connection.cursor()
@@ -56,7 +57,7 @@ class Contacts:
             if not cursor.execute('SELECT * FROM contacts WHERE id=?', (id,)).fetchone():
                 return
             
-            cursor.execute('UPDATE contacts SET name=?, phone=?, email=?, address=?, updated_at=? WHERE id=?', (name, phone, email, address, self.current_timestamp, id))
+            cursor.execute('UPDATE contacts SET name=?, phone=?, email=?, address=?, updated_at=? WHERE id=?', (name, phone, email, address, current_timestamp, id))
             
             return f'Contact succesfully updated'
         
@@ -151,14 +152,16 @@ class Contacts:
             if connection:
                 connection.close()
 
-    def email_exists(self, email: str) -> bool | None:
+    def email_exists(self, email: str) -> bool:
         '''returns True if a contact with the given email already exists'''
         try:
             connection = sqlite3.connect("contacts.db")
             cursor = connection.cursor()
             
-            if cursor.execute('SELECT * FROM contacts WHERE email=?', (email,)).fetchone():
-                return True
+            contact = cursor.execute('SELECT * FROM contacts WHERE email=?', (email,)).fetchone()
+            if not contact or contact[3] == '':
+                return False
+            return True
         
         except Error as e:
             print(f'SQLite Error: {e}')

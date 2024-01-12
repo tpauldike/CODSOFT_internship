@@ -300,7 +300,7 @@ class GUI:
         self.display_contact_details()
 
     def display_contact_details(self):
-        selected_name = self.contact_list.get(self.contact_list.curselection())
+        selected_name = self.contact_list.get('anchor')
         contact_details = self.db.get_single_contact(selected_name)
         date_label = self.date_created.cget('text')
         date_label2 = self.date_modified.cget('text')
@@ -409,8 +409,13 @@ class GUI:
         if not self.str_len_ok():
             return
         if self.input_fields.cget('text') == 'Add New Contact':
-            if not self.db.email_exists(email) and not self.db.phone_exists(phone):
-                self.db.create_contact(name, phone, email, address)
+            if self.db.email_exists(email):
+                self.display_error(f"A user with the email '{email}' already exists")
+                return
+            if self.db.phone_exists(phone):
+                self.display_error(f"A user with the number '{phone}' already exists")
+                return
+            self.db.create_contact(name, phone, email, address)
         elif self.input_fields.cget('text') == 'Update Contact Information':
             self.db.update_contact(self.selected_id, name, phone, email, address)
             
