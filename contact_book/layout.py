@@ -94,8 +94,11 @@ class GUI:
 
     def display_input_fields(self, labeltext: str) -> None:
         '''creates the input fields for adding or updating contacts'''
-        if hasattr(self, 'contact_list') and self.contact_list.winfo_exists:
-            selected_name = self.contact_list.get(self.contact_list.curselection())
+        if hasattr(self, 'contact_list') and self.contact_list.winfo_exists():
+            selected_name = self.contact_list.get('anchor')
+            if not selected_name and labeltext == 'Update Contact Information':
+                self.display_error('No contact selected')
+                return
         self.destroy_all_widgets()
         
         self.root.config(bg=self.root_bg)
@@ -227,15 +230,18 @@ class GUI:
 
     def create_contact_details_widget(self) -> None:
         '''creates the widget where full details of the selected contact are displayed'''
+        selected_name = self.contact_list.get('anchor')
+        if not selected_name:
+            self.display_error('No contact selected')
+            return
         if hasattr(self, 'contact_details') and self.contact_details.winfo_exists():
-            selected_name = self.contact_list.get(self.contact_list.curselection())
             displayed_name = self.contact_name_display.get()
             if selected_name == displayed_name:
                 self.close_contact_details()
                 return
             else:
                 self.close_contact_details()
-                
+
         self.contact_details = tk.LabelFrame(
             self.root, bg=self.contact_details_bg, padx=10, pady=10)
         self.contact_details.place(x=230, y=120)
@@ -361,7 +367,10 @@ class GUI:
 
     def delete_contact(self) -> None:
         '''deletes the currently selected contact'''
-        selected_name = self.contact_list.get(self.contact_list.curselection())
+        selected_name = self.contact_list.get('anchor')
+        if not selected_name:
+            self.display_error('No contact selected')
+            return
         contact_details = self.db.get_single_contact(selected_name)
         if not contact_details:
             return
