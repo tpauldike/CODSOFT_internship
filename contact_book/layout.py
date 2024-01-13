@@ -56,6 +56,7 @@ class GUI:
         self.display_home_page()
         self.db = db()
         db.set_up_database()
+        self.root.bind('<KeyPress>', self.handle_event)
 
         self.root.mainloop()
 
@@ -397,7 +398,7 @@ class GUI:
             else:
                 self.contact_list.insert(tk.END, contact[0])
 
-    def save(self) -> str | None:
+    def save(self) -> None:
         '''creates or updates a contact'''
         name = self.name_input.get().strip()
         phone = self.phone_input.get().strip()
@@ -477,3 +478,9 @@ class GUI:
                 self.display_error(f"The maximum no. of characters allowed for '{label[:-2]}' is {max_length}")
                 return
         return True
+    
+    def handle_event(self, event) -> None:
+        '''handles the <KeyPress> event, making Return/Enter work like "save" or "details"'''
+        if event.keysym == 'Return':
+            if hasattr(self, 'input_fields') and self.input_fields.winfo_exists():
+                self.save()
