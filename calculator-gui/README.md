@@ -29,7 +29,9 @@ It has the following features:
     - *Enter* works like `=`; *Meta/Alt* (the one on the right side) works `answer`; *Esc* works like `clear`, *Backspace* works like `←`, *'/'* inputs `÷` on the screen and *'Shift + 8'* (the * character) displays `×` on the screen
 
 ## How to Install and Use the Calculator
-> *You may prefer seeing [this video tutorial](https://youtu.be/_HAj5oL9GPA?si=oECWArJe0WmvKXBN), to watch and learn.*
+Here is [a demo of the calculator](https://youtu.be/V2n3C-sPyCs?si=x1UzCsrdw2quw1DY)
+
+> *For the installation, you may prefer seeing [this video tutorial](https://youtu.be/_HAj5oL9GPA?si=oECWArJe0WmvKXBN), to watch and learn.*
 
 Open your terminal (command line) and do the following:
 
