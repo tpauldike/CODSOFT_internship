@@ -5,7 +5,7 @@ I decided to see what the world outside of ALX SE environment looks like, I got 
 You are free to contribute to the project after January, 2024, just ensure you read through [CONTRIBUTION.md](./CONTRIBUTION.md) to know how to contribute,
 after reading about the particular project of interest.
 
-There were 5 projects in all and I was supposed to get at least 3 of them done within the 4 weeks of internship, but as an [**ALX**](https://www.alxafrica.com/)
+There were 5 projects in all and I was supposed to get at least 3 of them done within the 4 weeks of internship; as an [**ALX**](https://www.alxafrica.com/)
 brought up, I chose to do them all. I thought it was a great opportunity to stand out, if indeed being an ALX SE student makes one stand out in the tech space.
 
 ***The projects were as follows:***
@@ -61,5 +61,9 @@ Python, allowing users to specify the length and complexity of the password.
 **User Interface:** Design a user-friendly interface for easy interaction.
 
 --------
+
+## Extra Project ([A Calulator with a GUI](./calculator-gui))
+This was built and submitted to CodeClause during a `Python` development internship with her as well, but I chose to add it here. It was built with
+`Python Tkinter`; it's a desktop application, a calculator that has a Graphical User Interface. More info about the app is on the [README file](./calculator-gui/README.md). You may want to as well visit the [original repository](https://github.com/tpauldike/CodeClauseInternship)
 
 ##### Author: [Topman Paul-Dike](https://github.com/tpauldike)
