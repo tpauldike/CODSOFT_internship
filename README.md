@@ -60,10 +60,10 @@ Python, allowing users to specify the length and complexity of the password.
 
 **User Interface:** Design a user-friendly interface for easy interaction.
 
---------
-
 ## Extra Project ([A Calulator with a GUI](./calculator-gui))
 This was built and submitted to CodeClause during a `Python` development internship with her as well, but I chose to add it here. It was built with
 `Python Tkinter`; it's a desktop application, a calculator that has a Graphical User Interface. More info about the app is on the [README file](./calculator-gui/README.md). You may want to as well visit the [original repository](https://github.com/tpauldike/CodeClauseInternship)
+
+--------
 
 ##### Author: [Topman Paul-Dike](https://github.com/tpauldike)
