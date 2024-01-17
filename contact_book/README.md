@@ -24,6 +24,9 @@ The app was built and tested on `Ubuntu 22.04.2`
 
 4. Feedback when operation is successful and warnings when there's an error
 
+## How to Use the App
+To learn how the app is used, watch [this demo](https://youtu.be/TpXZzTrb7VA?si=h1SwVTfFRKJ49NQD) of how the application works
+
 ## Installation
 > *You may prefer seeing [this video tutorial](https://youtu.be/_HAj5oL9GPA?si=oECWArJe0WmvKXBN), to watch and learn.*
 
